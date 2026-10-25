@@ -11,6 +11,11 @@ import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.ollama.api.OllamaChatOptions;
 import org.springframework.stereotype.Service;
+import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
+import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
+import org.springframework.ai.vectorstore.SearchRequest;
+import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.core.Ordered;
 
 import java.time.Duration;
 
@@ -27,20 +32,31 @@ public class SpringAiModelService implements SamplingModelService {
     private static final Logger log = LoggerFactory.getLogger(SpringAiModelService.class);
 
     private static final String SYSTEM_PROMPT = """
-            Eres un asistente conciso y directo.
-            Responde siempre en el mismo idioma en el que te escriba el usuario.
-            Si no sabes algo, dilo en lugar de inventar.
-            """;
+        Eres un asistente que responde preguntas sobre los documentos cargados por el usuario.
+        Responde siempre en el mismo idioma en el que te escriba el usuario.
+        Usa solo la informacion del contexto. Si no esta ahi, dilo en lugar de inventar.
+        """;
 
     private final ChatClient chatClient;
     private final OllamaChatOptions configuredOptions;
 
-    public SpringAiModelService(ChatClient.Builder chatClientBuilder, OllamaChatModel chatModel) {
-        this.chatClient = chatClientBuilder
-                .defaultSystem(SYSTEM_PROMPT)
-                .build();
-        this.configuredOptions = chatModel.getOptions();
-    }
+    public SpringAiModelService(ChatClient.Builder chatClientBuilder,
+                            OllamaChatModel chatModel,
+                            VectorStore vectorStore) {
+    this.chatClient = chatClientBuilder
+            .defaultSystem(SYSTEM_PROMPT)
+            .defaultAdvisors(
+                    QuestionAnswerAdvisor.builder(vectorStore)
+                            .searchRequest(SearchRequest.builder()
+                                    .topK(4)                   // cuantos fragmentos recuperar
+                                    .similarityThreshold(0.5)  // similitud minima (0 a 1)
+                                    .build())
+                            .build(),
+                    // Muestra en el log el prompt real (con fragmentos). Va DESPUES del RAG.
+                    new SimpleLoggerAdvisor(Ordered.LOWEST_PRECEDENCE - 1))
+            .build();
+    this.configuredOptions = chatModel.getOptions();
+}
 
     @Override
     public ModelResult generateResponse(String question, String sessionId) {

@@ -15,6 +15,11 @@ import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.ollama.api.OllamaChatOptions;
 import org.springframework.ai.template.st.StTemplateRenderer;
 import org.springframework.stereotype.Service;
+import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
+import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
+import org.springframework.ai.vectorstore.SearchRequest;
+import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.core.Ordered;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -27,19 +32,28 @@ public class SpringAiPromptTemplateModelService implements PromptTemplateModelSe
     private final PromptTemplateRegistry registry;
 
     public SpringAiPromptTemplateModelService(
-            ChatClient.Builder chatClientBuilder,
-            OllamaChatModel chatModel,
-            PromptTemplateRegistry registry) {
-        this.registry = registry;
-        this.configuredOptions = chatModel.getOptions();
-        this.chatClient = chatClientBuilder
-                .defaultSystem(registry.resolve(PromptTemplateId.CONCISE.value(), Map.of()).resource())
-                .defaultTemplateRenderer(StTemplateRenderer.builder()
-                        .startDelimiterToken('<')
-                        .endDelimiterToken('>')
-                        .build())
-                .build();
-    }
+        ChatClient.Builder chatClientBuilder,
+        OllamaChatModel chatModel,
+        PromptTemplateRegistry registry,
+        VectorStore vectorStore) {
+    this.registry = registry;
+    this.configuredOptions = chatModel.getOptions();
+    this.chatClient = chatClientBuilder
+            .defaultSystem(registry.resolve(PromptTemplateId.CONCISE.value(), Map.of()).resource())
+            .defaultTemplateRenderer(StTemplateRenderer.builder()
+                    .startDelimiterToken('<')
+                    .endDelimiterToken('>')
+                    .build())
+            .defaultAdvisors(
+                    QuestionAnswerAdvisor.builder(vectorStore)
+                            .searchRequest(SearchRequest.builder()
+                                    .topK(4)
+                                    .similarityThreshold(0.5)
+                                    .build())
+                            .build(),
+                    new SimpleLoggerAdvisor(Ordered.LOWEST_PRECEDENCE - 1))
+            .build();
+}
 
     @Override
     public String validate(ChatRequest request) {
