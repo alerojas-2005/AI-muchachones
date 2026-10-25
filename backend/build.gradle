@@ -39,6 +39,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.ai:spring-ai-starter-model-ollama'
 
+    // --- RAG ---
+    // Base de datos vectorial PGVector (incluye JDBC y el driver de PostgreSQL)
+    implementation 'org.springframework.ai:spring-ai-starter-vector-store-pgvector'
+    // Advisor que conecta el ChatClient con el VectorStore (QuestionAnswerAdvisor)
+    implementation 'org.springframework.ai:spring-ai-vector-store-advisor'
+    // Lector de documentos basado en Apache Tika (PDF, DOCX, PPTX, HTML, TXT...)
+    implementation 'org.springframework.ai:spring-ai-tika-document-reader'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
