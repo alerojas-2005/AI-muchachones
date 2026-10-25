@@ -164,6 +164,17 @@
     min-height: 1.4em;
   }
 
+  /* ===== NUEVO (RAG): carga de documentos ===== */
+  .uploader { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .uploader input[type=file] { flex: 1; min-width: 0; font: inherit; font-size: 13px; }
+  .uploader button {
+    padding: 8px 14px; font: inherit; font-weight: 600; cursor: pointer;
+    color: var(--ink); background: var(--surface);
+    border: 1px solid var(--ink); border-radius: 3px;
+  }
+  .uploader button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .uploader .hint { flex-basis: 100%; }
+
   @media (prefers-reduced-motion: reduce) {
     * { animation: none !important; transition: none !important; }
   }
@@ -179,6 +190,13 @@
       <span id="probe-text">comprobando el modelo…</span>
     </span>
   </div>
+
+  <!-- ===== NUEVO (RAG): carga de documentos ===== -->
+  <form class="uploader" id="uploader">
+    <input type="file" id="file" accept=".pdf,.docx,.pptx,.txt,.md,.html">
+    <button type="submit" id="upload">Cargar documento</button>
+    <p class="hint" id="upload-status"></p>
+  </form>
 
   <div class="transcript" id="transcript" role="log" aria-live="polite" aria-label="Conversación">
     <p class="empty" id="empty">Escribe una pregunta para enviarla al modelo que corre en Ollama.</p>
@@ -204,7 +222,8 @@
 
   // Debe ser >= spring.http.client.read-timeout del backend. Una inferencia de
   // llama3 en CPU puede tardar minutos la primera vez.
-  const TIMEOUT_MS = 180000;
+  // CAMBIO (RAG): con contexto recuperado el prompt es mucho mayor y tarda más.
+  const TIMEOUT_MS = 300000;
 
   // sessionId estable por pestaña: el backend ya lo acepta y lo registra en logs.
   const SESSION_ID = (crypto.randomUUID?.() || String(Date.now()));
@@ -338,6 +357,42 @@
     addTurn("user", "tú", question);
     $input.value = "";
     ask(question);
+  });
+
+  /* ===== NUEVO (RAG): carga de documentos ===== */
+
+  const $uploader     = document.getElementById("uploader");
+  const $file         = document.getElementById("file");
+  const $uploadBtn    = document.getElementById("upload");
+  const $uploadStatus = document.getElementById("upload-status");
+
+  $uploader.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const file = $file.files[0];
+    if (!file) { $uploadStatus.textContent = "Selecciona un archivo primero."; return; }
+
+    // FormData arma el cuerpo multipart/form-data. No fijes Content-Type a mano:
+    // el navegador lo pone con el "boundary" correcto.
+    const form = new FormData();
+    form.append("file", file);   // debe coincidir con @RequestParam("file")
+
+    $uploadBtn.disabled = true;
+    $uploadStatus.textContent = `Indexando ${file.name}… (calculando embeddings)`;
+    try {
+      const res = await fetch(`${API}/api/v1/documents`, {
+        method: "POST",
+        body: form,
+        signal: AbortSignal.timeout(TIMEOUT_MS)
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok || data?.status !== "ok") throw new Error(`HTTP ${res.status}`);
+      $uploadStatus.textContent =
+        `✓ ${data.fileName}: ${data.chunks} fragmentos indexados en ${data.elapsedMs} ms`;
+    } catch (err) {
+      $uploadStatus.textContent = `No se pudo indexar el documento (${err.message}).`;
+    } finally {
+      $uploadBtn.disabled = false;
+    }
   });
 
   probe();
