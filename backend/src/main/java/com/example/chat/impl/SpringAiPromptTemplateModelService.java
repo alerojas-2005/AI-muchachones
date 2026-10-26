@@ -20,6 +20,8 @@ import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvi
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.core.Ordered;
+import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -31,28 +33,72 @@ public class SpringAiPromptTemplateModelService implements PromptTemplateModelSe
     private final OllamaChatOptions configuredOptions;
     private final PromptTemplateRegistry registry;
 
-    public SpringAiPromptTemplateModelService(
+public SpringAiPromptTemplateModelService(
         ChatClient.Builder chatClientBuilder,
         OllamaChatModel chatModel,
         PromptTemplateRegistry registry,
-        VectorStore vectorStore) {
+        VectorStore vectorStore,
+        @Value("${rag.top-k:4}") int topK,
+        @Value("${rag.similarity-threshold:0.5}") double similarityThreshold) {
+
     this.registry = registry;
     this.configuredOptions = chatModel.getOptions();
+
     this.chatClient = chatClientBuilder
-            .defaultSystem(registry.resolve(PromptTemplateId.CONCISE.value(), Map.of()).resource())
-            .defaultTemplateRenderer(StTemplateRenderer.builder()
-                    .startDelimiterToken('<')
-                    .endDelimiterToken('>')
-                    .build())
+            .defaultSystem(
+                    registry.resolve(
+                            PromptTemplateId.CONCISE.value(),
+                            Map.of()
+                    ).resource()
+            )
+            .defaultTemplateRenderer(
+                    StTemplateRenderer.builder()
+                            .startDelimiterToken('<')
+                            .endDelimiterToken('>')
+                            .build()
+            )
             .defaultAdvisors(
                     QuestionAnswerAdvisor.builder(vectorStore)
-                            .searchRequest(SearchRequest.builder()
-                                    .topK(4)
-                                    .similarityThreshold(0.5)
-                                    .build())
+                            .promptTemplate(
+                                    PromptTemplate.builder()
+                                            .renderer(
+                                                    StTemplateRenderer.builder()
+                                                            .startDelimiterToken('<')
+                                                            .endDelimiterToken('>')
+                                                            .build()
+                                            )
+                                            .template("""
+                                                    <query>
+
+                                                    Información recuperada del documento:
+                                                    ---------------------
+                                                    <question_answer_context>
+                                                    ---------------------
+
+                                                    Reglas:
+                                                    Reglas:
+                                                    1. Responde siempre en español, de forma clara y directa.
+                                                    2. Usa el contexto de arriba para responder, citando el artículo cuando aparezca.
+                                                    3. Solo si el contexto realmente no contiene información relacionada con la pregunta,
+                                                    responde: No encuentro esta información en el documento.
+                                                    4. No uses conocimiento externo ni inventes datos.
+                                                    """)
+                                            .build()
+                            )
+                            .searchRequest(
+                                    SearchRequest.builder()
+                                            .topK(topK)
+                                            .similarityThreshold(similarityThreshold)
+                                            .build()
+                            )
                             .build(),
-                    new SimpleLoggerAdvisor(Ordered.LOWEST_PRECEDENCE - 1))
+                    new SimpleLoggerAdvisor(
+                            Ordered.LOWEST_PRECEDENCE - 1
+                    )
+            )
             .build();
+             org.slf4j.LoggerFactory.getLogger(getClass())
+            .info("RAG config: topK={} threshold={}", topK, similarityThreshold);
 }
 
     @Override

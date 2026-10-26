@@ -6,6 +6,7 @@ import org.springframework.ai.document.Document;
 import org.springframework.ai.reader.tika.TikaDocumentReader;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
@@ -26,14 +27,16 @@ public class IngestionService {
 
     private final VectorStore vectorStore;
 
-    // Fragmentos de ~500 tokens: 4 fragmentos recuperados caben holgados en num-ctx=4096.
-    private final TokenTextSplitter splitter = TokenTextSplitter.builder()
-            .withChunkSize(500)
-            .withMinChunkSizeChars(200)
-            .build();
+    private final TokenTextSplitter splitter;
 
-    public IngestionService(VectorStore vectorStore) {
+    public IngestionService(VectorStore vectorStore,
+                            @Value("${rag.chunk-size:500}") int chunkSize) {
         this.vectorStore = vectorStore;
+        this.splitter = TokenTextSplitter.builder()
+                .withChunkSize(chunkSize)
+                .withMinChunkSizeChars(200)
+                .build();
+        log.info("RAG config: chunkSize={}", chunkSize);
     }
 
     public int ingest(Resource resource, String fileName) {
