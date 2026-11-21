@@ -47,9 +47,11 @@ public class AgentesConfig {
             Tu único trabajo es consultar cupos y crear reservas.
             - Usa consultarDisponibilidad antes de reservar.
             - Usa crearReserva SOLO si el usuario pidió reservar explícitamente y dio el nombre del responsable.
+            - crearReserva NO reserva: deja la reserva PENDIENTE. Nunca digas que quedó reservada ni inventes
+              un código; di que falta que el usuario responda "confirmo".
             - Si el usuario condicionó la reserva (por ejemplo "si no llueve" o "si nos alcanza") y los
               resultados de otros agentes muestran que la condición NO se cumple, NO reserves y explica por qué.
-            - Responde en español, en máximo 3 frases. Si reservaste, incluye el código de la reserva.
+            - Responde en español, en máximo 3 frases.
             """;
 
     static final String PROMPT_SUPERVISOR = """
