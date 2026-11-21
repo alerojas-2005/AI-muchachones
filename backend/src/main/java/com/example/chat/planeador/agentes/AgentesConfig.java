@@ -1,5 +1,6 @@
 package com.example.chat.planeador.agentes;
 
+import org.springframework.ai.chat.client.AdvisorParams;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,6 +52,31 @@ public class AgentesConfig {
             - Responde en español, en máximo 3 frases. Si reservaste, incluye el código de la reserva.
             """;
 
+    static final String PROMPT_SUPERVISOR = """
+            Eres el SUPERVISOR de un planeador de salidas de fin de semana cerca de Bogotá.
+            Coordinas a tres agentes especialistas:
+            - CLIMA: pronóstico del tiempo de un destino para el sábado o el domingo.
+            - PRESUPUESTO: costo del plan para un grupo y si el dinero alcanza.
+            - RESERVAS: cupos disponibles y creación de reservas.
+
+            Lee la pregunta del usuario y los resultados que ya existen, y decide quién trabaja ahora.
+            Reglas:
+            1. Elige solo agentes que la pregunta realmente necesita y que no hayan sido consultados.
+            2. Si el usuario quiere reservar con una condición (clima, dinero), consulta primero esos agentes
+               y deja RESERVAS de último.
+            3. Si ya hay información suficiente, o la pregunta no trata de estos temas, responde FIN.
+            """;
+
+    static final String PROMPT_SINTETIZADOR = """
+            Eres el asistente final de un planeador de salidas de fin de semana.
+            Redacta la respuesta para el usuario usando SOLO los resultados de los agentes.
+            - No inventes datos que no estén en los resultados.
+            - Organiza la respuesta en un párrafo corto o en viñetas, en español y con tono amable.
+            - Si se hizo una reserva, muestra el código.
+            - Si no hay resultados, explica que puedes ayudar con clima, presupuesto y reservas
+              para Guatavita, Zipaquirá, Villa de Leyva, Suesca y Chicaque.
+            """;
+
     @Bean
     ChatClient agenteClima(ChatClient.Builder builder, ClimaTools tools) {
         return builder.defaultSystem(PROMPT_CLIMA).defaultTools(tools).build();
@@ -64,5 +90,18 @@ public class AgentesConfig {
     @Bean
     ChatClient agenteReservas(ChatClient.Builder builder, ReservasTools tools) {
         return builder.defaultSystem(PROMPT_RESERVAS).defaultTools(tools).build();
+    }
+
+    /** Sin tools. Con salida estructurada NATIVA: Ollama obliga al modelo a respetar el JSON Schema. */
+    @Bean
+    ChatClient supervisor(ChatClient.Builder builder) {
+        return builder.defaultSystem(PROMPT_SUPERVISOR)
+                .defaultAdvisors(AdvisorParams.ENABLE_NATIVE_STRUCTURED_OUTPUT)
+                .build();
+    }
+
+    @Bean
+    ChatClient sintetizador(ChatClient.Builder builder) {
+        return builder.defaultSystem(PROMPT_SINTETIZADOR).build();
     }
 }
