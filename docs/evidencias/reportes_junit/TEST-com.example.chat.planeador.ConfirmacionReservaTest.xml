@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.chat.planeador.ConfirmacionReservaTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-11-23T04:55:44.238Z" hostname="b35fe361988d" time="0.334">
+  <properties/>
+  <testcase name="descartarCancelaLaReserva()" classname="com.example.chat.planeador.ConfirmacionReservaTest" time="0.199"/>
+  <testcase name="laConfirmacionEsPorSesion()" classname="com.example.chat.planeador.ConfirmacionReservaTest" time="0.005"/>
+  <testcase name="confirmarCreaLaReservaUnaSolaVez()" classname="com.example.chat.planeador.ConfirmacionReservaTest" time="0.02"/>
+  <testcase name="crearReservaDejaPendienteYNoDescuentaCupos()" classname="com.example.chat.planeador.ConfirmacionReservaTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,129 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.0)
+
+2026-11-23T05:06:15.261Z  INFO 1 --- [           main] com.example.chat.Application             : Starting Application v0.1.0 using Java 21.0.13.1 with PID 1 (/app/app.jar started by spring in /app)
+2026-11-23T05:06:15.630Z DEBUG 1 --- [           main] com.example.chat.Application             : Running with Spring Boot v4.1.0, Spring v7.0.8
+2026-11-23T05:06:15.688Z  INFO 1 --- [           main] com.example.chat.Application             : No active profile set, falling back to 1 default profile: "default"
+2026-11-23T05:06:23.617Z  INFO 1 --- [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-11-23T05:06:23.656Z  INFO 1 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-11-23T05:06:23.657Z  INFO 1 --- [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.22]
+2026-11-23T05:06:23.799Z  INFO 1 --- [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 7147 ms
+2026-11-23T05:06:25.393Z DEBUG 1 --- [           main] o.s.a.m.t.a.ToolCallingAutoConfiguration : Cannot load class: org.springframework.security.oauth2.client.ClientAuthorizationException
+2026-11-23T05:06:26.270Z  INFO 1 --- [           main] o.s.a.v.pgvector.PgVectorStore           : Using the vector table name: vector_store. Is empty: false
+2026-11-23T05:06:26.289Z  INFO 1 --- [           main] o.s.a.v.pgvector.PgVectorStore           : Initializing PGVectorStore schema for table: vector_store in schema: public
+2026-11-23T05:06:26.290Z  INFO 1 --- [           main] o.s.a.v.pgvector.PgVectorStore           : vectorTableValidationsEnabled false
+2026-11-23T05:06:26.330Z  INFO 1 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-11-23T05:06:29.347Z  INFO 1 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@60842a78
+2026-11-23T05:06:29.362Z  INFO 1 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-11-23T05:06:29.742Z  INFO 1 --- [           main] e.c.i.SpringAiPromptTemplateModelService : RAG config: topK=4 threshold=0.5
+2026-11-23T05:06:32.867Z  INFO 1 --- [           main] com.example.chat.rag.IngestionService    : RAG config: chunkSize=500
+2026-11-23T05:06:33.919Z  INFO 1 --- [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-11-23T05:06:33.934Z  INFO 1 --- [           main] com.example.chat.Application             : Started Application in 20.852 seconds (process running for 32.054)
+2026-11-23T05:09:22.147Z  INFO 1 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-11-23T05:09:22.162Z  INFO 1 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-11-23T05:09:22.283Z  INFO 1 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 119 ms
+2026-11-23T05:09:22.369Z DEBUG 1 --- [nio-8080-exec-1] c.e.chat.filter.LogRedactionFilter       : Request: method=GET path=/health/llm
+2026-11-23T05:09:26.207Z DEBUG 1 --- [nio-8080-exec-2] c.e.chat.filter.LogRedactionFilter       : Request: method=POST path=/api/v1/chat
+2026-11-23T05:09:26.593Z  INFO 1 --- [nio-8080-exec-2] com.example.chat.ChatController          : Received chat request sessionId=prueba-1-6bb7d42f question=¿Cómo estará el clima en Guatavita el domingo?
+2026-11-23T05:09:26.594Z  INFO 1 --- [nio-8080-exec-2] .e.c.i.AgentesPromptTemplateModelService : Planeador multiagente. sessionId=prueba-1-6bb7d42f
+2026-11-23T05:17:24.886Z  INFO 1 --- [nio-8080-exec-2] c.e.chat.planeador.PlaneadorOrquestador  : [SUPERVISOR] -> CLIMA (CLIMA)
+2026-11-23T05:17:40.789Z DEBUG 1 --- [nio-8080-exec-2] o.s.a.m.tool.DefaultToolCallingManager   : Executing tool call: consultarPronostico
+2026-11-23T05:17:41.247Z DEBUG 1 --- [nio-8080-exec-2] o.s.ai.tool.method.MethodToolCallback    : Starting execution of tool: consultarPronostico
+2026-11-23T05:17:41.450Z DEBUG 1 --- [nio-8080-exec-2] o.s.ai.tool.method.MethodToolCallback    : Successful execution of tool: consultarPronostico
+2026-11-23T05:17:41.463Z DEBUG 1 --- [nio-8080-exec-2] o.s.a.t.e.DefaultToolCallResultConverter : Converting tool result to JSON.
+2026-11-23T05:17:50.604Z  INFO 1 --- [nio-8080-exec-2] c.e.chat.planeador.PlaneadorOrquestador  : [CLIMA] El domingo en Guatavita será lluvioso con temperaturas entre 7 °C y 15 °C. Lleve ropa ligera y un impermeable.
+2026-11-23T05:17:57.325Z  INFO 1 --- [nio-8080-exec-2] c.e.chat.planeador.PlaneadorOrquestador  : [SUPERVISOR] -> RESERVAS (CLIMA)
+2026-11-23T05:18:16.802Z DEBUG 1 --- [nio-8080-exec-2] o.s.a.m.tool.DefaultToolCallingManager   : Executing tool call: consultarDisponibilidad
+2026-11-23T05:18:16.802Z DEBUG 1 --- [nio-8080-exec-2] o.s.ai.tool.method.MethodToolCallback    : Starting execution of tool: consultarDisponibilidad
+2026-11-23T05:18:16.809Z DEBUG 1 --- [nio-8080-exec-2] o.s.ai.tool.method.MethodToolCallback    : Successful execution of tool: consultarDisponibilidad
+2026-11-23T05:18:16.809Z DEBUG 1 --- [nio-8080-exec-2] o.s.a.t.e.DefaultToolCallResultConverter : Converting tool result to JSON.
+2026-11-23T05:18:23.192Z  INFO 1 --- [nio-8080-exec-2] c.e.chat.planeador.PlaneadorOrquestador  : [RESERVAS] El domingo en Guatavita quedan 4 cupos disponibles. No puedo reservar sin que me proporciones el nombre del responsable.
+2026-11-23T05:18:29.500Z  INFO 1 --- [nio-8080-exec-2] c.e.chat.planeador.PlaneadorOrquestador  : [SUPERVISOR] -> RESERVAS (CLIMA)
+2026-11-23T05:18:50.199Z  INFO 1 --- [nio-8080-exec-2] com.example.chat.ChatController          : Chat response for sessionId=prueba-1-6bb7d42f elapsedMs=563554 status=ok response=com.example.chat.dto.ChatResponse@522bf46
+2026-11-23T05:18:52.378Z DEBUG 1 --- [nio-8080-exec-3] c.e.chat.filter.LogRedactionFilter       : Request: method=POST path=/api/v1/chat
+2026-11-23T05:18:52.484Z  INFO 1 --- [nio-8080-exec-3] com.example.chat.ChatController          : Received chat request sessionId=prueba-2-e260357d question=Somos 4 amigos con 350000 pesos. ¿Nos alcanza para ir a Zipaquirá?
+2026-11-23T05:18:52.485Z  INFO 1 --- [nio-8080-exec-3] .e.c.i.AgentesPromptTemplateModelService : Planeador multiagente. sessionId=prueba-2-e260357d
+2026-11-23T05:18:58.498Z  INFO 1 --- [nio-8080-exec-3] c.e.chat.planeador.PlaneadorOrquestador  : [SUPERVISOR] -> RESERVAS (PRESUPUESTO)
+2026-11-23T05:19:05.740Z DEBUG 1 --- [nio-8080-exec-3] o.s.a.m.tool.DefaultToolCallingManager   : Executing tool call: consultarDisponibilidad
+2026-11-23T05:19:05.749Z DEBUG 1 --- [nio-8080-exec-3] o.s.ai.tool.method.MethodToolCallback    : Starting execution of tool: consultarDisponibilidad
+2026-11-23T05:19:05.757Z DEBUG 1 --- [nio-8080-exec-3] o.s.ai.tool.method.MethodToolCallback    : Successful execution of tool: consultarDisponibilidad
+2026-11-23T05:19:05.758Z DEBUG 1 --- [nio-8080-exec-3] o.s.a.t.e.DefaultToolCallResultConverter : Converting tool result to JSON.
+2026-11-23T05:19:12.472Z  INFO 1 --- [nio-8080-exec-3] c.e.chat.planeador.PlaneadorOrquestador  : [RESERVAS] El sábado quedan 30 cupos para Catedral de Sal de Zipaquirá. ¿Quieres consultar el domingo?
+2026-11-23T05:19:19.606Z  INFO 1 --- [nio-8080-exec-3] c.e.chat.planeador.PlaneadorOrquestador  : [SUPERVISOR] -> RESERVAS (PRESUPUESTO)
+2026-11-23T05:19:39.687Z  INFO 1 --- [nio-8080-exec-3] com.example.chat.ChatController          : Chat response for sessionId=prueba-2-e260357d elapsedMs=47198 status=ok response=com.example.chat.dto.ChatResponse@7e1021fa
+2026-11-23T05:19:39.832Z DEBUG 1 --- [nio-8080-exec-4] c.e.chat.filter.LogRedactionFilter       : Request: method=POST path=/api/v1/chat
+2026-11-23T05:19:39.858Z  INFO 1 --- [nio-8080-exec-4] com.example.chat.ChatController          : Received chat request sessionId=prueba-3-38362bf0 question=Somos 2 y queremos ir a Villa de Leyva el sábado. ¿Cómo estará el clima y cuánto nos cuesta?
+2026-11-23T05:19:39.859Z  INFO 1 --- [nio-8080-exec-4] .e.c.i.AgentesPromptTemplateModelService : Planeador multiagente. sessionId=prueba-3-38362bf0
+2026-11-23T05:19:45.336Z  INFO 1 --- [nio-8080-exec-4] c.e.chat.planeador.PlaneadorOrquestador  : [SUPERVISOR] -> RESERVAS (CLIMA)
+2026-11-23T05:19:52.818Z DEBUG 1 --- [nio-8080-exec-4] o.s.a.m.tool.DefaultToolCallingManager   : Executing tool call: consultarDisponibilidad
+2026-11-23T05:19:52.819Z DEBUG 1 --- [nio-8080-exec-4] o.s.ai.tool.method.MethodToolCallback    : Starting execution of tool: consultarDisponibilidad
+2026-11-23T05:19:52.826Z DEBUG 1 --- [nio-8080-exec-4] o.s.ai.tool.method.MethodToolCallback    : Successful execution of tool: consultarDisponibilidad
+2026-11-23T05:19:52.827Z DEBUG 1 --- [nio-8080-exec-4] o.s.a.t.e.DefaultToolCallResultConverter : Converting tool result to JSON.
+2026-11-23T05:19:58.163Z  INFO 1 --- [nio-8080-exec-4] c.e.chat.planeador.PlaneadorOrquestador  : [RESERVAS] El sábado quedan 2 cupos para Villa de Leyva. ¿Quieres reservar?
+2026-11-23T05:20:03.089Z  INFO 1 --- [nio-8080-exec-4] c.e.chat.planeador.PlaneadorOrquestador  : [SUPERVISOR] -> CLIMA (CLIMA)
+2026-11-23T05:20:14.355Z DEBUG 1 --- [nio-8080-exec-4] o.s.a.m.tool.DefaultToolCallingManager   : Executing tool call: consultarPronostico
+2026-11-23T05:20:14.364Z DEBUG 1 --- [nio-8080-exec-4] o.s.ai.tool.method.MethodToolCallback    : Starting execution of tool: consultarPronostico
+2026-11-23T05:20:14.379Z DEBUG 1 --- [nio-8080-exec-4] o.s.ai.tool.method.MethodToolCallback    : Successful execution of tool: consultarPronostico
+2026-11-23T05:20:14.380Z DEBUG 1 --- [nio-8080-exec-4] o.s.a.t.e.DefaultToolCallResultConverter : Converting tool result to JSON.
+2026-11-23T05:20:23.844Z  INFO 1 --- [nio-8080-exec-4] c.e.chat.planeador.PlaneadorOrquestador  : [CLIMA] El sábado en Villa de Leyva será soleado con temperaturas entre 12 °C y 25 °C y una probabilidad de lluvia del 5 %. No necesitas comprar un impermeable.
+2026-11-23T05:20:30.959Z  INFO 1 --- [nio-8080-exec-4] c.e.chat.planeador.PlaneadorOrquestador  : [SUPERVISOR] -> PRESUPUESTO (PRESUPUESTO)
+2026-11-23T05:20:49.766Z DEBUG 1 --- [nio-8080-exec-4] o.s.a.m.tool.DefaultToolCallingManager   : Executing tool call: estimarCosto
+2026-11-23T05:20:49.767Z DEBUG 1 --- [nio-8080-exec-4] o.s.ai.tool.method.MethodToolCallback    : Starting execution of tool: estimarCosto
+2026-11-23T05:20:49.838Z DEBUG 1 --- [nio-8080-exec-4] o.s.ai.tool.method.MethodToolCallback    : Successful execution of tool: estimarCosto
+2026-11-23T05:20:49.839Z DEBUG 1 --- [nio-8080-exec-4] o.s.a.t.e.DefaultToolCallResultConverter : Converting tool result to JSON.
+2026-11-23T05:20:58.947Z DEBUG 1 --- [nio-8080-exec-4] o.s.a.m.tool.DefaultToolCallingManager   : Executing tool call: calcularSaldo
+2026-11-23T05:20:58.948Z DEBUG 1 --- [nio-8080-exec-4] o.s.ai.tool.method.MethodToolCallback    : Starting execution of tool: calcularSaldo
+2026-11-23T05:20:58.968Z DEBUG 1 --- [nio-8080-exec-4] o.s.ai.tool.method.MethodToolCallback    : Successful execution of tool: calcularSaldo
+2026-11-23T05:20:58.968Z DEBUG 1 --- [nio-8080-exec-4] o.s.a.t.e.DefaultToolCallResultConverter : Converting tool result to JSON.
+2026-11-23T05:21:09.236Z  INFO 1 --- [nio-8080-exec-4] c.e.chat.planeador.PlaneadorOrquestador  : [PRESUPUESTO] El costo total para ir a Villa de Leyva para 2 personas es $230.000. Con un presupuesto de $3.000.000, alcanza el dinero disponible.
+2026-11-23T05:21:36.357Z  INFO 1 --- [nio-8080-exec-4] com.example.chat.ChatController          : Chat response for sessionId=prueba-3-38362bf0 elapsedMs=116428 status=ok response=com.example.chat.dto.ChatResponse@48c68328
+2026-11-23T05:21:38.308Z DEBUG 1 --- [nio-8080-exec-5] c.e.chat.filter.LogRedactionFilter       : Request: method=POST path=/api/v1/chat
+2026-11-23T05:21:38.353Z  INFO 1 --- [nio-8080-exec-5] com.example.chat.ChatController          : Received chat request sessionId=prueba-4-ba216899 question=Somos 3 y tenemos 250000. Si no llueve mucho y nos alcanza, reserva Suesca para el sábado a nombre de Laura.
+2026-11-23T05:21:38.353Z  INFO 1 --- [nio-8080-exec-5] .e.c.i.AgentesPromptTemplateModelService : Planeador multiagente. sessionId=prueba-4-ba216899
+2026-11-23T05:21:46.067Z  INFO 1 --- [nio-8080-exec-5] c.e.chat.planeador.PlaneadorOrquestador  : [SUPERVISOR] -> RESERVAS (CLIMA)
+2026-11-23T05:21:56.462Z DEBUG 1 --- [nio-8080-exec-5] o.s.a.m.tool.DefaultToolCallingManager   : Executing tool call: consultarDisponibilidad
+2026-11-23T05:21:56.469Z DEBUG 1 --- [nio-8080-exec-5] o.s.ai.tool.method.MethodToolCallback    : Starting execution of tool: consultarDisponibilidad
+2026-11-23T05:21:56.495Z DEBUG 1 --- [nio-8080-exec-5] o.s.ai.tool.method.MethodToolCallback    : Successful execution of tool: consultarDisponibilidad
+2026-11-23T05:21:56.495Z DEBUG 1 --- [nio-8080-exec-5] o.s.a.t.e.DefaultToolCallResultConverter : Converting tool result to JSON.
+2026-11-23T05:22:03.600Z  INFO 1 --- [nio-8080-exec-5] c.e.chat.planeador.PlaneadorOrquestador  : [RESERVAS] No puedo reservar para el sábado. El destino Suesca solo tiene 8 cupos disponibles, no alcanza para 3 personas.
+2026-11-23T05:22:11.514Z  INFO 1 --- [nio-8080-exec-5] c.e.chat.planeador.PlaneadorOrquestador  : [SUPERVISOR] -> RESERVAS (No hay cupos disponibles para la cantidad de personas solicitadas)
+2026-11-23T05:22:28.284Z  INFO 1 --- [nio-8080-exec-5] com.example.chat.ChatController          : Chat response for sessionId=prueba-4-ba216899 elapsedMs=49927 status=ok response=com.example.chat.dto.ChatResponse@786ab52a
+2026-11-23T05:22:28.479Z DEBUG 1 --- [nio-8080-exec-6] c.e.chat.filter.LogRedactionFilter       : Request: method=POST path=/api/v1/chat
+2026-11-23T05:22:28.507Z  INFO 1 --- [nio-8080-exec-6] com.example.chat.ChatController          : Received chat request sessionId=prueba-4-ba216899 question=confirmo
+2026-11-23T05:22:28.507Z  INFO 1 --- [nio-8080-exec-6] .e.c.i.AgentesPromptTemplateModelService : Planeador multiagente. sessionId=prueba-4-ba216899
+2026-11-23T05:22:28.525Z  INFO 1 --- [nio-8080-exec-6] com.example.chat.ChatController          : Chat response for sessionId=prueba-4-ba216899 elapsedMs=18 status=ok response=com.example.chat.dto.ChatResponse@699e1814
+2026-11-23T05:22:28.579Z DEBUG 1 --- [nio-8080-exec-7] c.e.chat.filter.LogRedactionFilter       : Request: method=POST path=/api/v1/chat
+2026-11-23T05:22:28.581Z  INFO 1 --- [nio-8080-exec-7] com.example.chat.ChatController          : Received chat request sessionId=prueba-5-6b4fef65 question=Somos 3 con 150000. Si nos alcanza, reserva Suesca el domingo a nombre de Laura.
+2026-11-23T05:22:28.582Z  INFO 1 --- [nio-8080-exec-7] .e.c.i.AgentesPromptTemplateModelService : Planeador multiagente. sessionId=prueba-5-6b4fef65
+2026-11-23T05:22:34.552Z  INFO 1 --- [nio-8080-exec-7] c.e.chat.planeador.PlaneadorOrquestador  : [SUPERVISOR] -> CLIMA (CLIMA)
+2026-11-23T05:22:40.758Z DEBUG 1 --- [nio-8080-exec-7] o.s.a.m.tool.DefaultToolCallingManager   : Executing tool call: consultarPronostico
+2026-11-23T05:22:40.760Z DEBUG 1 --- [nio-8080-exec-7] o.s.ai.tool.method.MethodToolCallback    : Starting execution of tool: consultarPronostico
+2026-11-23T05:22:40.768Z DEBUG 1 --- [nio-8080-exec-7] o.s.ai.tool.method.MethodToolCallback    : Successful execution of tool: consultarPronostico
+2026-11-23T05:22:40.768Z DEBUG 1 --- [nio-8080-exec-7] o.s.a.t.e.DefaultToolCallResultConverter : Converting tool result to JSON.
+2026-11-23T05:22:48.894Z  INFO 1 --- [nio-8080-exec-7] c.e.chat.planeador.PlaneadorOrquestador  : [CLIMA] La recomendación para tu viaje a Suesca el domingo es llevar ropa ligera y cómoda, probablemente llueva en la tarde. No olvides llevar un impermeable.
+2026-11-23T05:22:55.512Z  INFO 1 --- [nio-8080-exec-7] c.e.chat.planeador.PlaneadorOrquestador  : [SUPERVISOR] -> RESERVAS (PRESUPUESTO)
+2026-11-23T05:23:06.379Z DEBUG 1 --- [nio-8080-exec-7] o.s.a.m.tool.DefaultToolCallingManager   : Executing tool call: consultarDisponibilidad
+2026-11-23T05:23:06.396Z DEBUG 1 --- [nio-8080-exec-7] o.s.ai.tool.method.MethodToolCallback    : Starting execution of tool: consultarDisponibilidad
+2026-11-23T05:23:06.419Z DEBUG 1 --- [nio-8080-exec-7] o.s.ai.tool.method.MethodToolCallback    : Successful execution of tool: consultarDisponibilidad
+2026-11-23T05:23:06.421Z DEBUG 1 --- [nio-8080-exec-7] o.s.a.t.e.DefaultToolCallResultConverter : Converting tool result to JSON.
+2026-11-23T05:23:18.966Z DEBUG 1 --- [nio-8080-exec-7] o.s.a.m.tool.DefaultToolCallingManager   : Executing tool call: crearReserva
+2026-11-23T05:23:18.968Z DEBUG 1 --- [nio-8080-exec-7] o.s.ai.tool.method.MethodToolCallback    : Starting execution of tool: crearReserva
+2026-11-23T05:23:19.211Z DEBUG 1 --- [nio-8080-exec-7] o.s.ai.tool.method.MethodToolCallback    : Successful execution of tool: crearReserva
+2026-11-23T05:23:19.214Z DEBUG 1 --- [nio-8080-exec-7] o.s.a.t.e.DefaultToolCallResultConverter : Converting tool result to JSON.
+2026-11-23T05:23:31.907Z  INFO 1 --- [nio-8080-exec-7] c.e.chat.planeador.PlaneadorOrquestador  : [RESERVAS] RESERVA PENDIENTE: Rocas de Suesca, domingo, 3 personas, a nombre de Laura. El usuario debe responder 'confirmo' en su siguiente mensaje para completarla.
+2026-11-23T05:23:37.559Z  INFO 1 --- [nio-8080-exec-7] c.e.chat.planeador.PlaneadorOrquestador  : [SUPERVISOR] -> RESERVAS (FIN)
+2026-11-23T05:23:46.283Z  INFO 1 --- [nio-8080-exec-7] com.example.chat.ChatController          : Chat response for sessionId=prueba-5-6b4fef65 elapsedMs=77699 status=ok response=com.example.chat.dto.ChatResponse@40c7a149
+2026-11-23T05:23:46.470Z DEBUG 1 --- [nio-8080-exec-8] c.e.chat.filter.LogRedactionFilter       : Request: method=POST path=/api/v1/chat
+2026-11-23T05:23:46.493Z  INFO 1 --- [nio-8080-exec-8] com.example.chat.ChatController          : Received chat request sessionId=prueba-6-defc883d question=┬┐Qui├®n gan├│ el mundial de 2022?
+2026-11-23T05:23:46.494Z  INFO 1 --- [nio-8080-exec-8] .e.c.i.AgentesPromptTemplateModelService : Planeador multiagente. sessionId=prueba-6-defc883d
+2026-11-23T05:23:50.434Z  INFO 1 --- [nio-8080-exec-8] c.e.chat.planeador.PlaneadorOrquestador  : [SUPERVISOR] -> RESERVAS (FIN)
+2026-11-23T05:23:55.871Z  INFO 1 --- [nio-8080-exec-8] c.e.chat.planeador.PlaneadorOrquestador  : [RESERVAS] No hay información sobre el ganador del Mundial de 2022 disponible. Pregúntale algo sobre el destino que hayas reservado.
+2026-11-23T05:23:59.730Z  INFO 1 --- [nio-8080-exec-8] c.e.chat.planeador.PlaneadorOrquestador  : [SUPERVISOR] -> RESERVAS (FIN)
+2026-11-23T05:24:10.733Z  INFO 1 --- [nio-8080-exec-8] com.example.chat.ChatController          : Chat response for sessionId=prueba-6-defc883d elapsedMs=24238 status=ok response=com.example.chat.dto.ChatResponse@3b3b5701

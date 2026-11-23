@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.chat.planeador.HerramientasTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-11-23T04:55:44.584Z" hostname="b35fe361988d" time="0.046">
+  <properties/>
+  <testcase name="noReservaSinCupos()" classname="com.example.chat.planeador.HerramientasTest" time="0.007"/>
+  <testcase name="saldoNegativoDiceCuantoFalta()" classname="com.example.chat.planeador.HerramientasTest" time="0.014"/>
+  <testcase name="pronosticoAceptaTildesYMayusculas()" classname="com.example.chat.planeador.HerramientasTest" time="0.014"/>
+  <testcase name="destinoDesconocidoListaLosValidos()" classname="com.example.chat.planeador.HerramientasTest" time="0.001"/>
+  <testcase name="costoDeZipaquiraParaCuatro()" classname="com.example.chat.planeador.HerramientasTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

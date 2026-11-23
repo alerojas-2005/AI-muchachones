@@ -1,23 +1,21 @@
-﻿﻿<#
-ejecutar_pruebas.ps1 - Envia las seis preguntas de prueba al endpoint POST /api/v1/chat
-y guarda la respuesta y el tiempo de cada una.
-
-Sirve para los dos backends porque exponen el mismo contrato (question, sessionId):
-  - Spring AI (pruebachat, rama taller-agentes): -Backend springai
-  - LangGraph (FastAPI):                          -Backend langgraph
-
-Con -Backend springai, despues de la pregunta 4 se envia "confirmo" en la MISMA sesion,
-porque el reto implementado en Spring AI (confirmacion humana) deja la reserva pendiente
-hasta que el usuario confirma.
-
-Los agentes que llama el supervisor no vienen en la respuesta HTTP: se leen en el log
-del backend (docker logs pruebachat_backend), que el .bat guarda junto a los resultados.
-
-Cada pregunta usa un sessionId nuevo para que una pregunta no influya en otra.
-
-Uso:
-  powershell -ExecutionPolicy Bypass -File tests\ejecutar_pruebas.ps1 -Backend springai -Salida C:\ruta
-#>
+﻿# ejecutar_pruebas.ps1 - Envia las seis preguntas de prueba al endpoint POST /api/v1/chat
+# y guarda la respuesta y el tiempo de cada una.
+#
+# Sirve para los dos backends porque exponen el mismo contrato (question, sessionId):
+#   - Spring AI (pruebachat, rama taller-agentes): -Backend springai
+#   - LangGraph (FastAPI):                          -Backend langgraph
+#
+# Con -Backend springai, despues de la pregunta 4 se envia "confirmo" en la MISMA sesion,
+# porque el reto implementado en Spring AI (confirmacion humana) deja la reserva pendiente
+# hasta que el usuario confirma.
+#
+# Los agentes que llama el supervisor no vienen en la respuesta HTTP: se leen en el log
+# del backend (docker logs pruebachat_backend), que el .bat guarda junto a los resultados.
+#
+# Cada pregunta usa un sessionId nuevo para que una pregunta no influya en otra.
+#
+# Uso:
+#   powershell -ExecutionPolicy Bypass -File tests\ejecutar_pruebas.ps1 -Backend springai -Salida C:\ruta
 param(
     [ValidateSet("langgraph", "springai")]
     [string]$Backend = "springai",
