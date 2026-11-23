@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.chat.planeador.PresupuestoToolsTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-11-23T04:55:44.631Z" hostname="b35fe361988d" time="0.008">
+  <properties/>
+  <testcase name="costoDeGuatavitaParaUnaPersona()" classname="com.example.chat.planeador.PresupuestoToolsTest" time="0.002"/>
+  <testcase name="saldoPositivoIndicaCuantoSobra()" classname="com.example.chat.planeador.PresupuestoToolsTest" time="0.0"/>
+  <testcase name="saldoNegativoIndicaCuantoFalta()" classname="com.example.chat.planeador.PresupuestoToolsTest" time="0.0"/>
+  <testcase name="costoDeZipaquiraParaCuatroPersonas()" classname="com.example.chat.planeador.PresupuestoToolsTest" time="0.001"/>
+  <testcase name="destinoDesconocidoMuestraDestinosValidos()" classname="com.example.chat.planeador.PresupuestoToolsTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
